@@ -21,7 +21,7 @@ int uartslave_parse_mod_mask(uartslave_t *pslave, char *pstr, uint16_t *pmod_msk
 #ifdef UARTSLAVE_TST
                 if (strncmp(pstr - 4, "tst", 3) == 0)
                     *pmod_msk = 1;
-#else  //UARTSLAVE_TST
+#else //UARTSLAVE_TST
                 *pmod_msk = UARTSLAVE_MOD_MSK_0;
 #endif //UARTSLAVE_TST
             return ret;
@@ -83,6 +83,10 @@ void uartslave_cycle(uartslave_t *pslave) {
                 pslave->count++;
             if ((ch == 0) || (pslave->count >= pslave->size))
                 break;
+        }
+        if (ch == UARTRXBUFF_ERR_OVERFLOW) {
+            uartrxbuff_reset(pslave->prxbuff);
+            pslave->count = 0;
         }
     }
     if (pslave->count >= pslave->size) { //command overflow

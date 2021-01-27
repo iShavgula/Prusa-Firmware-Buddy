@@ -5,7 +5,9 @@
 This repository includes source code and firmware releases for the Original Prusa 3D printers based on the 32-bit ARM microcontrollers.
 
 The currently supported model is:
-- Original Prusa MINI
+- Any 3D printer with the Buddy board and Prusa MINI LCD.
+
+The default configuration corresponds to a MK3 Bear upgrade. You can edit `include/external_config.h` file to adapt the firmware to your needs.
 
 ## Getting Started
 

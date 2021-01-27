@@ -42,6 +42,11 @@
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 5
 
+#define X_STEPPER_CURRENT 380
+#define Y_STEPPER_CURRENT 400
+#define Z_STEPPER_CURRENT 450
+#define E_STEPPER_CURRENT 500
+
 #define X_STEPPER_RES STEPPER_RES_1_8 // STEPPER_RES_0_9
 #define Y_STEPPER_RES STEPPER_RES_1_8
 #define Z_STEPPER_RES STEPPER_RES_1_8

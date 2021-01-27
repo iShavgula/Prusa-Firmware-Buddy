@@ -17,10 +17,6 @@
 #define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 204
 
-//
-// For Z_PROBE_ALLEN_KEY see the Delta example configurations.
-//
-
 /**
  *   Z Probe to nozzle (X,Y) offset, relative to (0, 0).
  *   X and Y offsets must be integers.
@@ -50,6 +46,11 @@
 #define Y_STEPPER_RES STEPPER_RES_0_9
 #define Z_STEPPER_RES STEPPER_RES_0_9
 #define E_STEPPER_RES STEPPER_RES_0_9
+
+#define X_STEPPER_CURRENT 380
+#define Y_STEPPER_CURRENT 400
+#define Z_STEPPER_CURRENT 450
+#define E_STEPPER_CURRENT 500
 
 // Extruder steps per unit
 #define E_STEPS_PER_UNIT 277

@@ -3,7 +3,7 @@
 // The physical length of the axis
 #define X_LENGTH 255
 #define Y_LENGTH 218
-#define Z_LENGTH 210
+#define Z_LENGTH 204
 
 // The size of the print bed
 #define X_BED_SIZE 250
@@ -15,7 +15,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 210
+#define Z_MAX_POS 204
 
 //
 // For Z_PROBE_ALLEN_KEY see the Delta example configurations.
@@ -46,12 +46,12 @@
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 5
 
-#define X_STEPPER_RES STEPPER_RES_1_8 // STEPPER_RES_0_9
-#define Y_STEPPER_RES STEPPER_RES_1_8
-#define Z_STEPPER_RES STEPPER_RES_1_8
-#define E_STEPPER_RES STEPPER_RES_1_8
+#define X_STEPPER_RES STEPPER_RES_0_9 // STEPPER_RES_0_9
+#define Y_STEPPER_RES STEPPER_RES_0_9
+#define Z_STEPPER_RES STEPPER_RES_0_9
+#define E_STEPPER_RES STEPPER_RES_0_9
 
 // Extruder steps per unit
-#define E_STEPS_PER_UNIT 140
+#define E_STEPS_PER_UNIT 277
 
 #define E_COOLING_FAN_NOCTUA

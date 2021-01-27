@@ -17,6 +17,35 @@
 #define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 210
 
+//
+// For Z_PROBE_ALLEN_KEY see the Delta example configurations.
+//
+
+/**
+ *   Z Probe to nozzle (X,Y) offset, relative to (0, 0).
+ *   X and Y offsets must be integers.
+ *
+ *   In the following example the X and Y offsets are both positive:
+ *   #define X_PROBE_OFFSET_FROM_EXTRUDER 10
+ *   #define Y_PROBE_OFFSET_FROM_EXTRUDER 10
+ *
+ *      +-- BACK ---+
+ *      |           |
+ *    L |    (+) P  | R <-- probe (20,20)
+ *    E |           | I
+ *    F | (-) N (+) | G <-- nozzle (10,10)
+ *    T |           | H
+ *      |    (-)    | T
+ *      |           |
+ *      O-- FRONT --+
+ *    (0,0)
+ */
+#define NOZZLE_TO_PROBE_OFFSET \
+    { 23, 5, 0 }
+
+// Certain types of probes need to stay away from edges
+#define MIN_PROBE_EDGE 5
+
 #define X_STEPPER_RES STEPPER_RES_1_8 // STEPPER_RES_0_9
 #define Y_STEPPER_RES STEPPER_RES_1_8
 #define Z_STEPPER_RES STEPPER_RES_1_8

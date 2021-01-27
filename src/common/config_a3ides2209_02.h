@@ -1,6 +1,7 @@
 //config_a3ides2209.h - configuration file for 2209 variant (rev02)
 #pragma once
 #include <stdint.h>
+#include "../../include/external_config.h"
 
 #define PRUSA_MARLIN_API
 
@@ -71,18 +72,26 @@ enum {
 
 //FANCTL0 - printing fan
 //static const uint8_t FANCTL0_PWM_MIN = 15;
-static const uint8_t FANCTL0_PWM_MIN = 10;
-static const uint8_t FANCTL0_PWM_MAX = 50;
+static const uint8_t FANCTL0_PWM_MIN = 20;
+static const uint8_t FANCTL0_PWM_MAX = 100;
 static const uint16_t FANCTL0_RPM_MIN = 500;
 static const uint16_t FANCTL0_RPM_MAX = 5000;
 static const uint8_t FANCTL0_PWM_THR = 20;
     #define FANCTL0_TRACE
 //FANCTL1 - heatbreak fan
 //static const uint8_t FANCTL1_PWM_MIN = 12;
+
+#ifdef E_COOLING_FAN_NOCTUA
+static const uint8_t FANCTL1_PWM_MIN = 40;
+static const uint8_t FANCTL1_PWM_MAX = 100;
+static const uint16_t FANCTL1_RPM_MIN = 1000;
+static const uint16_t FANCTL1_RPM_MAX = 8000;
+#else
 static const uint8_t FANCTL1_PWM_MIN = 0;
 static const uint8_t FANCTL1_PWM_MAX = 50;
 static const uint16_t FANCTL1_RPM_MIN = 1000;
 static const uint16_t FANCTL1_RPM_MAX = 8000;
+#endif
 static const uint8_t FANCTL1_PWM_THR = 20;
     #define FANCTL1_TRACE
 

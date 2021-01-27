@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#include "../external_config.h"
+
 // clang-format off
 
 /**
@@ -425,12 +427,17 @@
 // is more than PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
 
     // Prusa MINI
-    #define DEFAULT_Kp 7.00
-    #define DEFAULT_Ki 0.50
-    #define DEFAULT_Kd 45.00
+    // #define DEFAULT_Kp 7.00
+    // #define DEFAULT_Ki 0.50
+    // #define DEFAULT_Kd 45.00
     #define STEADY_STATE_HOTEND_LINEAR_COOLING_TERM 0.322
     #define STEADY_STATE_HOTEND_QUADRATIC_COOLING_TERM 0.0002
     #define STEADY_STATE_HOTEND_FAN_COOLING_TERM 3.9
+
+    // Prusa MINI Bear Max
+    #define DEFAULT_Kp 15.96
+    #define DEFAULT_Ki 0.82
+    #define DEFAULT_Kd 77.90
 
 #endif // PIDTEMP
 
@@ -468,9 +475,14 @@
     //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
     //24V Prusa MINI bed
-    #define DEFAULT_bedKp 120.00
-    #define DEFAULT_bedKi 1.50
-    #define DEFAULT_bedKd 600.00
+    // #define DEFAULT_bedKp 120.00
+    // #define DEFAULT_bedKi 1.50
+    // #define DEFAULT_bedKd 600.00
+
+    //24V Prusa BEAR bed
+    #define  DEFAULT_bedKp 126.13
+    #define  DEFAULT_bedKi 4.30
+    #define  DEFAULT_bedKd 924.76
 
 // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
@@ -492,7 +504,7 @@
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
 #define PREVENT_LENGTHY_EXTRUDE
-#define EXTRUDE_MAXLENGTH 1000
+#define EXTRUDE_MAXLENGTH 200
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
@@ -657,7 +669,7 @@
  */
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 280 } //E0 280 295
 #define DEFAULT_AXIS_STEPS_PER_UNIT \
-    { 100, 100, 400, 325 } //E0 280 295
+    { 100 * X_STEPPER_RES, 100 * X_STEPPER_RES, 400 * X_STEPPER_RES, E_STEPS_PER_UNIT }
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 800, 800, 3200, 1120 } //E0 280 295
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 1120 } //E0 280 295
 
@@ -667,7 +679,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
 #define DEFAULT_MAX_FEEDRATE \
-    { 180, 180, 12, 80 }
+    { 200, 200, 30, 120 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -838,7 +850,7 @@
  *    (0,0)
  */
 #define NOZZLE_TO_PROBE_OFFSET \
-    { -29, -3, 0 }
+    { 23, 5, 0 }
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 5
@@ -927,14 +939,14 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR false //true
+#define INVERT_X_DIR true
 #define INVERT_Y_DIR false
 #define INVERT_Z_DIR true
 
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true
+#define INVERT_E0_DIR false
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -952,23 +964,11 @@
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
-#define X_HOME_DIR 1
+#define X_HOME_DIR -1
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
 
 // @section machine
-
-// The size of the print bed
-#define X_BED_SIZE 180
-#define Y_BED_SIZE 180
-
-// Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS -2
-#define Y_MIN_POS -3
-#define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 185
 
 /**
  * Software Endstops
@@ -1117,7 +1117,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
     // Set the number of grid points per dimension.
-    #define GRID_MAX_POINTS_X 4
+    #define GRID_MAX_POINTS_X 7
     #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
 // Set the boundaries for probing (where the probe can reach).
@@ -1226,9 +1226,9 @@
 
 // Manually set the home position. Leave these undefined for automatic settings.
 // For DELTA this is the top-center of the Cartesian print volume.
-#define MANUAL_X_HOME_POS 180.4
-//#define MANUAL_Y_HOME_POS 0
-//#define MANUAL_Z_HOME_POS 0
+#define MANUAL_X_HOME_POS 0
+#define MANUAL_Y_HOME_POS -2.2
+// #define MANUAL_Z_HOME_POS 0.2
 
 // Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
 //
@@ -1242,8 +1242,8 @@
 #define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
-    #define Z_SAFE_HOMING_X_POINT (147.4) // X point for Z homing when homing all axes (G28).
-    #define Z_SAFE_HOMING_Y_POINT (21.1) // Y point for Z homing when homing all axes (G28).
+    #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
+    #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
 #endif
 
 // Homing speeds (mm/m)
@@ -1382,9 +1382,9 @@
 #if ENABLED(NOZZLE_PARK_FEATURE)
     // Specify a park position as { X, Y, Z }
     #define NOZZLE_PARK_POINT \
-        { (X_MAX_POS - 10), (Y_MAX_POS - 10), 20 }
+        { (X_MAX_POS - 10), (Y_MIN_POS + 10), 20 }
         #define NOZZLE_PARK_POINT_M600 \
-        { (X_MIN_POS + 10), (Y_MIN_POS + 10), 20 }
+        { (X_MAX_POS - 10), (Y_MIN_POS + 10), 20 }
     #define NOZZLE_PARK_XY_FEEDRATE 100 // (mm/s) X and Y axes feedrate (also used for delta Z axis)
     #define NOZZLE_PARK_Z_FEEDRATE 5 // (mm/s) Z axis feedrate (not used for delta printers)
 

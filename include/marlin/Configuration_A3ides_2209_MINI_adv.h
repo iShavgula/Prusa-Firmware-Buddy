@@ -21,6 +21,8 @@
  */
 #pragma once
 
+#include "../external_config.h"
+
 // clang-format off
 
 /**
@@ -104,13 +106,13 @@
  * Thermal Protection parameters for the bed are just as above for hotends.
  */
 #if ENABLED(THERMAL_PROTECTION_BED)
-    #define THERMAL_PROTECTION_BED_PERIOD 45 // Seconds
-    #define THERMAL_PROTECTION_BED_HYSTERESIS 25 // Degrees Celsius
+    #define THERMAL_PROTECTION_BED_PERIOD 20 // Seconds
+    #define THERMAL_PROTECTION_BED_HYSTERESIS 6 // Degrees Celsius
 
     /**
    * As described above, except for the bed (M140/M190/M303).
    */
-    #define WATCH_BED_TEMP_PERIOD 240 // Seconds
+    #define WATCH_BED_TEMP_PERIOD 60 // Seconds
     #define WATCH_BED_TEMP_INCREASE 2 // Degrees Celsius
 #endif
 
@@ -233,7 +235,7 @@
 // When first starting the main fan, run it at full speed for the
 // given number of milliseconds.  This gets the fan spinning reliably
 // before setting a PWM value. (Does not work with software PWM for fan on Sanguinololu)
-//#define FAN_KICKSTART_TIME 100
+#define FAN_KICKSTART_TIME 100
 
 /**
  * PWM Fan Scaling
@@ -517,7 +519,7 @@
 #define DEFAULT_STEPPER_DEACTIVE_TIME 120
 #define DISABLE_INACTIVE_X true
 #define DISABLE_INACTIVE_Y true
-#define DISABLE_INACTIVE_Z true // set to false if the nozzle will fall down on your printed part when print has finished.
+#define DISABLE_INACTIVE_Z false // set to false if the nozzle will fall down on your printed part when print has finished.
 #define DISABLE_INACTIVE_E true
 
 #define DEFAULT_MINIMUMFEEDRATE 0.0 // minimum feedrate
@@ -1335,7 +1337,7 @@
 // This short retract is done immediately, before parking the nozzle.
     #define FILAMENT_CHANGE_UNLOAD_FEEDRATE 80 // (mm/s) Unload filament feedrate. This can be pretty fast.
     #define FILAMENT_CHANGE_UNLOAD_ACCEL 1250 // (mm/s^2) Lower acceleration may allow a faster feedrate.
-    #define FILAMENT_CHANGE_UNLOAD_LENGTH 420 // (mm) The length of filament for a complete unload.
+    #define FILAMENT_CHANGE_UNLOAD_LENGTH 120 // (mm) The length of filament for a complete unload.
 //   For Bowden, the full length of the tube and nozzle.
 //   For direct drive, the full length of the nozzle.
 //   Set to 0 for manual unloading.
@@ -1344,12 +1346,12 @@
 // 0 to disable start loading and skip to fast load only
     #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE 80 // (mm/s) Load filament feedrate. This can be pretty fast.
     #define FILAMENT_CHANGE_FAST_LOAD_ACCEL 625 // (mm/s^2) Lower acceleration may allow a faster feedrate.
-    #define FILAMENT_CHANGE_FAST_LOAD_LENGTH 320 // (mm) Load length of filament, from extruder gear to nozzle.
+    #define FILAMENT_CHANGE_FAST_LOAD_LENGTH 55 // (mm) Load length of filament, from extruder gear to nozzle.
 //   For Bowden, the full length of the tube and nozzle.
 //   For direct drive, the full length of the nozzle.
 //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
     #define ADVANCED_PAUSE_PURGE_FEEDRATE 3 // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
-    #define ADVANCED_PAUSE_PURGE_LENGTH 50 // (mm) Length to extrude after loading.
+    #define ADVANCED_PAUSE_PURGE_LENGTH 40 // (mm) Length to extrude after loading.
 //   Set to 0 for manual extrusion.
 //   Filament can be extruded repeatedly from the Filament Change menu
 //   until extrusion is consistent, and to purge old filament.
@@ -1358,7 +1360,7 @@
 // Filament Unload does a Retract, Delay, and Purge first:
     #define FILAMENT_UNLOAD_RETRACT_LENGTH 30 // (mm) Unload initial retract length.
     #define FILAMENT_UNLOAD_DELAY 5000 // (ms) Delay for the filament to cool after retract.
-    #define FILAMENT_UNLOAD_PURGE_LENGTH 16 // (mm) An unretract is done, then this length is purged.
+    #define FILAMENT_UNLOAD_PURGE_LENGTH 8 // (mm) An unretract is done, then this length is purged.
     #define FILAMENT_UNLOAD_PURGE_FEEDRATE 66 // (mm/s)
     #define FILAMENT_UNLOAD_PHASE1_LENGHT 35 // (mm)fast phase
     #define FILAMENT_UNLOAD_PHASE2_LENGHT 45 // (mm)slow phase
@@ -1488,7 +1490,7 @@
     #define INTERPOLATE true // Interpolate X/Y/Z_MICROSTEPS to 256
 
     #if AXIS_IS_TMC(X)
-        #define X_CURRENT 350 // (mA) RMS current. Multiply by 1.414 for peak current.
+        #define X_CURRENT 380 // (mA) RMS current. Multiply by 1.414 for peak current.
         #define X_MICROSTEPS 16 // 0..256
         #define X_RSENSE 0.22
     #endif
@@ -1500,7 +1502,7 @@
     #endif
 
     #if AXIS_IS_TMC(Y)
-        #define Y_CURRENT 350
+        #define Y_CURRENT 400
         #define Y_MICROSTEPS 16
         #define Y_RSENSE 0.22
     #endif
@@ -1512,8 +1514,8 @@
     #endif
 
     #if AXIS_IS_TMC(Z)
-        #define Z_CURRENT 350 //530//650
-        #define Z_MICROSTEPS 8 //16
+        #define Z_CURRENT 450 //530//650
+        #define Z_MICROSTEPS 16
         #define Z_RSENSE 0.22
     #endif
 
@@ -1530,7 +1532,7 @@
     #endif
 
     #if AXIS_IS_TMC(E0)
-        #define E0_CURRENT 400 //520
+        #define E0_CURRENT 500 //520
         #define E0_MICROSTEPS 16 //32
         #define E0_RSENSE 0.22
     #endif

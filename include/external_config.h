@@ -15,7 +15,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 204
+#define Z_MAX_POS 210
 
 /**
  *   Z Probe to nozzle (X,Y) offset, relative to (0, 0).
@@ -42,10 +42,10 @@
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 5
 
-#define X_STEPPER_RES STEPPER_RES_0_9 // STEPPER_RES_0_9
-#define Y_STEPPER_RES STEPPER_RES_0_9
-#define Z_STEPPER_RES STEPPER_RES_0_9
-#define E_STEPPER_RES STEPPER_RES_0_9
+#define X_STEPPER_RES STEPPER_RES_1_8 // STEPPER_RES_0_9
+#define Y_STEPPER_RES STEPPER_RES_1_8
+#define Z_STEPPER_RES STEPPER_RES_1_8
+#define E_STEPPER_RES STEPPER_RES_1_8
 
 #define X_STEPPER_CURRENT 380
 #define Y_STEPPER_CURRENT 400
@@ -53,6 +53,6 @@
 #define E_STEPPER_CURRENT 500
 
 // Extruder steps per unit
-#define E_STEPS_PER_UNIT 277
+#define E_STEPS_PER_UNIT 140
 
 #define E_COOLING_FAN_NOCTUA

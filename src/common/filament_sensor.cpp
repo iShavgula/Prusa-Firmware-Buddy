@@ -21,6 +21,7 @@
 #include "task.h"          //critical sections
 #include "cmsis_os.h"      //osDelay
 #include "marlin_client.h" //enable/disable fs in marlin
+#include "../../include/external_config.h"
 
 using buddy::hw::fSensor;
 using buddy::hw::Pin;
@@ -39,6 +40,8 @@ typedef struct {
     uint8_t meas_cycle;
 } status_t;
 static status_t status = { 0, M600_on_edge, 0 };
+
+static Pin::State fSensor_pin_state_high = FILAMENT_RUNOUT_INVERTING ? Pin::State::low : Pin::State::high;
 
 /*---------------------------------------------------------------------------*/
 //debug functions
@@ -214,7 +217,7 @@ static void _injectM600() {
 }
 
 static void _cycle0() {
-    if (fSensor.read() == Pin::State::high) {
+    if (fSensor.read() == fSensor_pin_state_high) {
         fSensor.pullDown();
         status.meas_cycle = 1; //next cycle shall be 1
     } else {
@@ -245,7 +248,7 @@ static void _cycle0() {
 //called only in fs_cycle
 static void _cycle1() {
     //pulldown was set in cycle 0
-    _set_state(fSensor.read() == Pin::State::high ? fsensor_t::HasFilament : fsensor_t::NotConnected);
+    _set_state(fSensor.read() == fSensor_pin_state_high ? fsensor_t::HasFilament : fsensor_t::NotConnected);
     fSensor.pullUp();
     status.meas_cycle = 0; //next cycle shall be 0
 }

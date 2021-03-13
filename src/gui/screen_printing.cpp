@@ -116,7 +116,8 @@ void screen_printing_data_t::stopAction() {
 screen_printing_data_t::screen_printing_data_t()
     : AddSuperWindow<ScreenPrintingModel>(_(caption))
     , w_filename(this, Rect16(10, 33, 220, 29))
-    , w_progress(this, { 10, 70 }, HasNumber_t::yes)
+    , w_progress(this, Rect16(10, 70, GuiDefaults::RectScreen.Width() - 2 * 10, 16))
+    , w_progress_txt(this, Rect16(10, 86, GuiDefaults::RectScreen.Width() - 2 * 10, 30))
     , w_time_label(this, Rect16(10, 128, 101, 20), is_multiline::no)
     , w_time_value(this, Rect16(10, 148, 101, 20), is_multiline::no)
     , w_etime_label(this, Rect16(130, 128, 101, 20), is_multiline::no)
@@ -137,28 +138,28 @@ screen_printing_data_t::screen_printing_data_t()
 
     w_filename.font = resource_font(IDR_FNT_BIG);
     w_filename.SetPadding({ 0, 0, 0, 0 });
-    w_filename.SetAlignment(ALIGN_LEFT_BOTTOM);
+    w_filename.SetAlignment(Align_t::LeftBottom());
     // this MakeRAM is safe - vars->media_LFN is statically allocated (even though it may not be obvious at the first look)
     w_filename.SetText(vars->media_LFN ? string_view_utf8::MakeRAM((const uint8_t *)vars->media_LFN) : string_view_utf8::MakeNULLSTR());
 
     w_etime_label.font = resource_font(IDR_FNT_SMALL);
-    w_etime_label.SetAlignment(ALIGN_RIGHT_BOTTOM);
+    w_etime_label.SetAlignment(Align_t::RightBottom());
     w_etime_label.SetPadding({ 0, 2, 0, 2 });
     w_etime_label.SetText(_("Remaining Time"));
 
     w_etime_value.font = resource_font(IDR_FNT_SMALL);
-    w_etime_value.SetAlignment(ALIGN_RIGHT_BOTTOM);
+    w_etime_value.SetAlignment(Align_t::RightBottom());
     w_etime_value.SetPadding({ 0, 2, 0, 2 });
     // this MakeRAM is safe - text_etime is allocated in RAM for the lifetime of pw
     w_etime_value.SetText(string_view_utf8::MakeRAM((const uint8_t *)text_etime.data()));
 
     w_time_label.font = resource_font(IDR_FNT_SMALL);
-    w_time_label.SetAlignment(ALIGN_RIGHT_BOTTOM);
+    w_time_label.SetAlignment(Align_t::RightBottom());
     w_time_label.SetPadding({ 0, 2, 0, 2 });
     w_time_label.SetText(_("Printing time"));
 
     w_time_value.font = resource_font(IDR_FNT_SMALL);
-    w_time_value.SetAlignment(ALIGN_RIGHT_BOTTOM);
+    w_time_value.SetAlignment(Align_t::RightBottom());
     w_time_value.SetPadding({ 0, 2, 0, 2 });
     // this MakeRAM is safe - text_time_dur is allocated in RAM for the lifetime of pw
     w_time_value.SetText(string_view_utf8::MakeRAM((const uint8_t *)text_time_dur.data()));
@@ -181,9 +182,9 @@ void screen_printing_data_t::windowEvent(EventLock /*has private ctor*/, window_
         _last = HAL_GetTick();
 
         static char buff[] = "Sx Mx x xxxx";                         //"x"s are replaced
-        buff[1] = fs_get_state() + '0';                              // S0 init, S1 has filament, S2 no filament, S3 not connected, S4 disabled
-        buff[4] = fs_get_send_M600_on();                             // Me edge, Ml level, Mn never, Mx undefined
-        buff[6] = fs_was_M600_send() ? 's' : 'n';                    // s == send, n== not send
+        buff[1] = FS_instance().Get() + '0';                         // S0 init, S1 has filament, S2 no filament, S3 not connected, S4 disabled
+        buff[4] = FS_instance().GetM600_send_on();                   // Me edge, Ml level, Mn never, Mx undefined
+        buff[6] = FS_instance().WasM600_send() ? 's' : 'n';          // s == send, n== not send
         buff[8] = _is_in_M600_flg ? 'M' : '0';                       // M == marlin is doing M600
         buff[9] = marlin_event(MARLIN_EVT_CommandBegin) ? 'B' : '0'; // B == Event begin
         buff[10] = marlin_command() == MARLIN_CMD_M600 ? 'C' : '0';  // C == Command M600

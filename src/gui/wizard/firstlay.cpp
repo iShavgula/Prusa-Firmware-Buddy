@@ -21,7 +21,7 @@ enum {
 WizardState_t StateFnc_FIRSTLAY_FILAMENT_ASK() {
     uint8_t filament = 0;
     filament |= Filaments::CurrentIndex() != filament_t::NONE ? FKNOWN : 0;
-    filament |= fs_get_state() == fsensor_t::NoFilament ? F_NOTSENSED : 0;
+    filament |= FS_instance().Get() == fsensor_t::NoFilament ? F_NOTSENSED : 0;
 
     size_t def_bt = filament == (FKNOWN | F_NOTSENSED) ? 1 : 0; //default button
 
@@ -109,10 +109,10 @@ WizardState_t StateFnc_FIRSTLAY_MSBX_USEVAL() {
     //show dialog only when values are not equal
     float diff = marlin_vars()->z_offset - z_offset_def;
     if ((diff <= -z_offset_step) || (diff >= z_offset_step)) {
-        char buff[20 * 7];
+        char buff[21 * 9];
         {
-            char fmt[20 * 7];
-            // c=20 r=6
+            char fmt[21 * 9];
+            // c=21 r=9
             static const char fmt2Translate[] = N_("Do you want to use the current value?\nCurrent: %0.3f.\nDefault: %0.3f.\nClick NO to use the default value (recommended)");
             _(fmt2Translate).copyToRAM(fmt, sizeof(fmt)); // note the underscore at the beginning of this line
             snprintf(buff, sizeof(buff) / sizeof(char), fmt, (double)marlin_vars()->z_offset, (double)z_offset_def);
@@ -139,7 +139,7 @@ WizardState_t StateFnc_FIRSTLAY_MSBX_START_PRINT() {
 //and it would block dialog opening
 //checking marlin_update_vars(MARLIN_VAR_MSK(MARLIN_VAR_GQUEUE))->gqueue and calling gui_loop() does not help
 WizardState_t StateFnc_FIRSTLAY_PRINT() {
-    DialogHandler::Open(ClientFSM::FirstLayer, 0); //open screen now, it would auto open later (on G26)
+    DialogHandler::PreOpen(ClientFSM::FirstLayer, 0); //open screen now, it would auto open later (on G26)
 
     const int temp_nozzle_preheat = int(Filaments::PreheatTemp);
     const int temp_nozzle = std::max(int(marlin_vars()->display_nozzle), int(Filaments::Current().nozzle));

@@ -152,9 +152,7 @@ void gui_run(void) {
     gui_marlin_vars->media_SFN_path = gui_media_SFN_path;
 
     DialogHandler::Access(); //to create class NOW, not at first call of one of callback
-    marlin_client_set_fsm_create_cb(DialogHandler::Open);
-    marlin_client_set_fsm_destroy_cb(DialogHandler::Close);
-    marlin_client_set_fsm_change_cb(DialogHandler::Change);
+    marlin_client_set_fsm_cb(DialogHandler::Command);
     marlin_client_set_message_cb(MsgCircleBuffer_cb);
     marlin_client_set_warning_cb(Warning_cb);
     marlin_client_set_startup_cb(Startup_cb);
@@ -215,6 +213,7 @@ void gui_run(void) {
     uint32_t progr100 = 100;
     Screens::Access()->WindowEvent(GUI_event_t::GUI_STARTUP, (void *)progr100);
     while (1) {
+        DialogHandler::Access().Loop();
         Screens::Access()->Loop();
         gui_loop();
     }
@@ -224,10 +223,10 @@ void update_firmware_screen(void) {
     font_t *font = resource_font(IDR_FNT_SPECIAL);
     font_t *font1 = resource_font(IDR_FNT_NORMAL);
     display::Clear(COLOR_BLACK);
-    render_icon_align(Rect16(70, 20, 100, 100), IDR_PNG_pepa_64px, COLOR_BLACK, RENDER_FLG(ALIGN_CENTER, 0));
+    render_icon_align(Rect16(70, 20, 100, 100), IDR_PNG_pepa_64px, COLOR_BLACK, Align_t::Center());
     display::DrawText(Rect16(10, 115, 240, 60), _("Hi, this is your\nOriginal Prusa MINI."), font, COLOR_BLACK, COLOR_WHITE);
     display::DrawText(Rect16(10, 160, 240, 80), _("Please insert the USB\ndrive that came with\nyour MINI and reset\nthe printer to flash\nthe firmware"), font, COLOR_BLACK, COLOR_WHITE);
-    render_text_align(Rect16(5, 250, 230, 40), _("RESET PRINTER"), font1, COLOR_ORANGE, COLOR_WHITE, { 2, 6, 2, 2 }, ALIGN_CENTER);
+    render_text_align(Rect16(5, 250, 230, 40), _("RESET PRINTER"), font1, COLOR_ORANGE, COLOR_WHITE, { 2, 6, 2, 2 }, Align_t::Center());
     BtnState_t btn_ev;
     while (1) {
         if (jogwheel.ConsumeButtonEvent(btn_ev) && btn_ev == BtnState_t::Held)

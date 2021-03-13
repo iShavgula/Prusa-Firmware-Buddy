@@ -9,16 +9,12 @@
 #include "fsensor_eeprom.hpp"
 #include "rtos_api.hpp"
 
-#include "../../include/external_config.h"
-
 FSensor::FSensor()
     : state(fsensor_t::NotInitialized)
     , last_state(fsensor_t::NotInitialized)
     , event_lock(0) {
     PrintProcessor::Init();
 }
-
-static Pin::State fSensor_pin_state_high = FILAMENT_RUNOUT_INVERTING ? Pin::State::low : Pin::State::high;
 
 /*---------------------------------------------------------------------------*/
 //debug functions
